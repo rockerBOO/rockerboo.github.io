@@ -49,7 +49,7 @@ Most of the Brunch packages in the "dead-simple" skeleton will help to minify an
 The Brunch [configuration documentation](
 https://github.com/brunch/brunch/blob/master/docs/config.md) goes over all the options you can modify. It is a little hard to grasp the scopes and power of certain features. It will also usually continue to work, even if you have something configured improperly.
 
-## `files`
+### `files`
 
 {% highlight coffeescript %}
 files:
@@ -84,7 +84,7 @@ By default Brunch uses [Require.js][requirejs] modular functionality for Javascr
 
 CSS uses basic concatenation so its pretty much what you'd expect there. If you want SASS or LESS or STYL support there are Brunch packages for each, using the [PostCSS-brunch][postcss] plugin.
 
-## `paths`
+### `paths`
 
 The idea is that you will create these files in a separate place than your normal publicly accessible files. Use Brunch to build them into the files you'll use. You can customize where it will output the resulting files in the `paths` option. In watched part of paths will be where you put your raw files at before it builds them into the public folder. It will recursively find all the files in these folders, so organize them as you would like. `_file.css` will prevent the file from being built. This is like partials in SASS.
 

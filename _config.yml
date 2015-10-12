@@ -5,7 +5,7 @@ url: "http://rockerboo.github.io" # the base hostname & protocol for your site
 # THEME-SPECIFIC CONFIGURATION
 theme:
   # Meta
-  title: rockerBOO - Blog
+  title: rockerBOO (Blog)
   avatar: face200-circle.jpg
   gravatar: # b211c51e10480839982718365a067821 # Email MD5 hash
   description: "Writings about web development from a ten year veteran talking about front and backend development." # used by search engines
