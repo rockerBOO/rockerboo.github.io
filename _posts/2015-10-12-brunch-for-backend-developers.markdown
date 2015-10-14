@@ -78,7 +78,7 @@ By default Brunch uses [Require.js][requirejs] modular functionality for Javascr
 {% highlight html %}
 <script type="text/javascript" src="/app.js"></script>
 <script type="text/javascript">
-	var Package = require('js/package');
+  var Package = require('js/package');
 </script>
 {% endhighlight %}
 

@@ -5,7 +5,16 @@ date:   2015-10-07 15:16:48
 categories: mahout recommendations
 ---
 
-Mahout is a great application for creating recommendations, classification, and clustering (neighborhoods). This makes it a great tool for finding creating recommendations for Twitch streams.
+Mahout is a great application for creating recommendations, classification, and clustering (neighborhoods).
+
+Some overviews of the basic flow of the processing of user actions.
+
+* [Creating a Multimodal Recommender with Mahout and a Search Engine](http://occamsmachete.com/ml/2014/10/07/creating-a-unified-recommender-with-mahout-and-a-search-engine/)
+* [Building large scale recommendation engine](http://www.slideshare.net/KeeyongHan/buidling-large-scale-recommendation-engine-17262692)
+
+Mahout now has integration spark to do more real-time recommendations. Mahout can keep a summary of recommendations in memory from the basic learning process of the history of user actions.
+
+## Twitch API
 
 Twitch API allows you to get the last 1600 follows for every channel. We will be using the list of streamers currently live to create a list to index for follows. We will need to get the channel id, and meta information on the channel for creating links and showing profile images.
 
@@ -21,9 +30,11 @@ The format for the CSV should be
 	1382883, 439837534
 	33843, 49304453
 
+## Mahout
+
 {% highlight java %}
 DataModel dm
-	= new FileDataModel(new File("data/follows.csv"));
+  = new FileDataModel(new File("data/follows.csv"));
 {% endhighlight %}
 
 Recommendations require DataModel, Similarity, and Neighborhoods.
@@ -44,42 +55,44 @@ Next we will be using neighborhoods to get nearest user to given user using the 
 
 {% highlight java %}
 UserNeighborhood nh
-	= new NearestNUserNeighborhood(100, sim, dm);
+  = new NearestNUserNeighborhood(100, sim, dm);
 {% endhighlight %}
 
 Next we create our recommendations using the data model, neighborhood, and simularities.
 
 {% highlight java %}
 GenericUserBasedRecommender recommender
-	= new GenericUserBasedRecommender(dm, nh, sim);
+  = new GenericUserBasedRecommender(dm, nh, sim);
 {% endhighlight %}
 
 At this point you'll want to save a number of recommendations per user into a database or file. I'll be using MongoDB to store the results, but you can write to another file or HDFS for access with other processing systems for more analysis.
 
 {% highlight java %}
+// Mongo Client
 MongoClient client = new MongoClient();
 MongoDatabase database = client.getDatabase("twitch");
-MongoCollection<Document> collection = database.getCollection("twitch_recommendations");
+MongoCollection<Document> collection
+  = database.getCollection("twitch_recommendations");
 
 // Loop through each of the users in the data model
 for (LongPrimitiveIterator users = dm.getUserIDs(); users.hasNext();) {
-	long userId = users.nextLong();
+  long userId = users.nextLong();
 
-	// Get 25 recommendations for the userId
-	List<RecommendedItem> recommendations
-		= recommender.recommend(userId, 25);
+  // Get 25 recommendations for the userId
+  List<RecommendedItem> recommendations
+    = recommender.recommend(userId, 25);
 
-	List<Long> list = new ArrayList<Long>();
+  List<Long> list = new ArrayList<Long>();
 
-	// Add each recommendation to a list to save to mongo
-	for(RecommendedItem recommendation : recommendations) {
-		list.add(recommendation.getItemID());
-	}
+  // Add each recommendation to a list to save to mongo
+  for (RecommendedItem recommendation : recommendations) {
+    list.add(recommendation.getItemID());
+  }
 
-	// Save the recommended user list
-	Document document
-		= new Document("user", userId).append("recommended", list);
-	collection.insertOne(document);
+  // Save the recommended user list
+  Document document
+    = new Document("user", userId).append("recommended", list);
+  collection.insertOne(document);
 }
 {% endhighlight %}
 

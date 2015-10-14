@@ -79,3 +79,23 @@ header {
   }
 }
 
+/* Syntax */
+
+.highlight {
+  pre {
+    background-color: #fafafa;
+    padding: 1.3rem 1rem;
+    margin: .5rem 0px;
+  }
+}
+
+code,kbd,pre,samp {
+  font-family: "Roboto Mono", monospace;
+  font-size: .9em;
+}
+
+pre { margin: .3rem 0px; }
+
+code {
+  background: #fafafa;
+}

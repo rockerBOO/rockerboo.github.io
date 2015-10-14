@@ -10,6 +10,10 @@
   @media (max-width: 1000px) {
     padding: $padding-small * 1.5 $padding-large / 1.6;
   }
+
+  @media (max-width: 430px) {
+    padding: $padding-small * 1.5 $padding-large / 3;
+  }
 }
 %link-hover {
   text-decoration: underline;
